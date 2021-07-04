@@ -1,2 +1,2 @@
-web: sh setup.sh && streamlit run App.py server -p $PORT
-
+echo PORT $PORT
+streamlit run  --server.port $PORT App.py
