@@ -13,28 +13,29 @@ from timeit import default_timer as timer
 from datetime import timedelta
 
 
-# In[5]:
+# In[16]:
+
+
+
 
 
 
 st.title('EV Charging station usage')
 terminal = st.selectbox("Please select one of the terminals: ",
-                     ['S7-T1', 'S2-T1', 'S19-T1', 'S56-T3', 'S85-T3','S16-T3', 'S16-T1',
+                        ['S7-T1', 'S2-T1', 'S19-T1', 'S56-T3', 'S85-T3','S16-T3', 'S16-T1',
                      'S94-T3', 'S28-T1', 'S62-T3', 'S14-T3', 'S8-T1', 'S8-T3', 'S34-T3',
                      'S6-T2', 'S29-T3', 'S64-T1', 'S11-T1', 'S76-T3', 'S59-T1'])
  
-# print the selected hobby
-st.write("You Selected : ", terminal)
+
 
 d = st.date_input("Please Select the date", datetime.date(2019, 11, 1), min_value=datetime.date(2019, 11, 1), 
                   max_value=datetime.date(2021, 2, 1)) 
-st.write('Your selected date is:', d)
 
 t = st.time_input('Please select the time', datetime.time(8, 45))
-st.write('Your selected time is:', t)
+
 
 @st.cache  # 👈 Added this
-def fun(d, t):
+def fun1(d, t):
     month=[]
     day=[]
     week=[]
@@ -50,6 +51,10 @@ def fun(d, t):
 
 # Create a button, that when clicked, shows a text
 if(st.button("Please Submit the data")):
+    st.write('Your selected time is:', t)
+    # print the selected hobby
+    st.write("You Selected : ", terminal)
+    st.write('Your selected date is:', d)
     start = timer()
     if terminal in ['S7-T1', 'S19-T1', 'S85-T3', 'S28-T1', 'S62-T3']:
         
@@ -58,7 +63,7 @@ if(st.button("Please Submit the data")):
         st.write("Time taken in seconds:", timedelta(seconds=end-start))
     else:
 
-        X_test=fun(d, t)
+        X_test=fun1(d, t)
         
         #st.write("This terminal is: ", X_test)
         reconstructed_model = keras.models.load_model(terminal)
@@ -78,6 +83,7 @@ if(st.button("Please Submit the data")):
         st.write("This terminal is: ", text)
         end = timer()
         st.write("Time taken in seconds:" ,timedelta(seconds=end-start))
+        
 
 
 # In[ ]:
