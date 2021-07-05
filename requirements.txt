@@ -1,4 +1,4 @@
 streamlit
 pandas
-keras
+keras==2.1.5
 numpy
