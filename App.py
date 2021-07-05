@@ -6,7 +6,7 @@
 
 import streamlit as st
 import datetime
-import keras
+from tensorflow import keras
 import pandas as pd
 import numpy as np
 from timeit import default_timer as timer
