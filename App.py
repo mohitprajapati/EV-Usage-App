@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[4]:
+# In[1]:
 
 
 import streamlit as st
@@ -16,11 +16,7 @@ from datetime import timedelta
 # In[5]:
 
 
-month=[]
-day=[]
-week=[]
-hour=[]
-minute=[]
+
 st.title('EV Charging station usage')
 terminal = st.selectbox("Please select one of the terminals: ",
                      ['S7-T1', 'S2-T1', 'S19-T1', 'S56-T3', 'S85-T3','S16-T3', 'S16-T1',
@@ -36,11 +32,21 @@ st.write('Your selected date is:', d)
 
 t = st.time_input('Please select the time', datetime.time(8, 45))
 st.write('Your selected time is:', t)
-month.append(d.month)
-day.append(d.day)
-week.append(d.weekday())
-hour.append(t.hour)
-minute.append(t.minute)
+
+@st.cache  # 👈 Added this
+def fun(d, t):
+    month=[]
+    day=[]
+    week=[]
+    hour=[]
+    minute=[]
+    month.append(d.month)
+    day.append(d.day)
+    week.append(d.weekday())
+    hour.append(t.hour)
+    minute.append(t.minute)
+    return pd.DataFrame(list(zip( month, week, day, hour, minute)),
+             columns =['Month_name', 'Week_number', 'Date', 'Hour', 'Minute'])
 
 # Create a button, that when clicked, shows a text
 if(st.button("Please Submit the data")):
@@ -52,8 +58,7 @@ if(st.button("Please Submit the data")):
         st.write("Time taken in seconds:", timedelta(seconds=end-start))
     else:
 
-        X_test=pd.DataFrame(list(zip( month, week, day, hour, minute)),
-             columns =['Month_name', 'Week_number', 'Date', 'Hour', 'Minute'])
+        X_test=fun(d, t)
         
         #st.write("This terminal is: ", X_test)
         reconstructed_model = keras.models.load_model(terminal)
